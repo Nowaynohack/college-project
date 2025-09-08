@@ -1,0 +1,111 @@
+from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask_sqlalchemy import SQLAlchemy
+import os
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+app = Flask(__name__)
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(BASE_DIR, "colleges.db")
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+db = SQLAlchemy(app)
+
+
+# ---------- Models ----------
+class College(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, nullable=False)
+    city = db.Column(db.String, nullable=False)
+    branch = db.Column(db.String, nullable=False)
+    # cutoff - expected last year's closing marks for general category (numeric percent/marks)
+    cutoff = db.Column(db.Float, nullable=False)
+    fees = db.Column(db.String)
+    placements = db.Column(db.String)
+    review = db.Column(db.String)
+
+    def to_dict(self):
+        return {
+            "id": self.id, "name": self.name, "city": self.city,
+            "branch": self.branch, "cutoff": self.cutoff,
+            "fees": self.fees, "placements": self.placements, "review": self.review
+        }
+
+
+# ---------- Simple recommendation logic ----------
+def categorize(student_marks, college_cutoff):
+    """
+    Simple rule:
+    - Safe: student_marks >= cutoff
+    - Moderate: cutoff - 5 <= student_marks < cutoff
+    - Dream: student_marks < cutoff - 5
+    (You can tune thresholds as per domain)
+    """
+    if student_marks >= college_cutoff:
+        return "Safe"
+    elif college_cutoff - 5 <= student_marks < college_cutoff:
+        return "Moderate"
+    else:
+        return "Dream"
+
+
+# ---------- Routes ----------
+@app.route("/")
+def index():
+    # For the form we may need distinct cities/branches from DB
+    cities = [c.city for c in College.query.with_entities(College.city).distinct().all()]
+    branches = [b.branch for b in College.query.with_entities(College.branch).distinct().all()]
+    return render_template("index.html", cities=cities, branches=branches)
+
+
+@app.route("/recommend", methods=["POST"])
+def recommend():
+    # gather user input
+    marks = float(request.form.get("marks", 0))
+    category = request.form.get("category", "General")  # not used for now, but DB can have per-category cutoffs
+    city_pref = request.form.get("city", "").strip()
+    branch_pref = request.form.get("branch", "").strip()
+    budget = request.form.get("budget", "").strip()
+
+    # Basic query: filter by branch and optionally city and budget
+    q = College.query
+    if branch_pref:
+        q = q.filter(College.branch.ilike(f"%{branch_pref}%"))
+    if city_pref:
+        q = q.filter(College.city.ilike(f"%{city_pref}%"))
+    # NOTE: budget filter omitted because DB stores fees as text; if numeric fees, filter here
+
+    colleges = q.all()
+
+    recs = {"Safe": [], "Moderate": [], "Dream": []}
+    for c in colleges:
+        cat = categorize(marks, c.cutoff)
+        recs[cat].append(c.to_dict())
+
+    # Auto-arrange CAP preference list (order: Dream, Moderate, Safe)
+    preference_list = recs["Dream"] + recs["Moderate"] + recs["Safe"]
+
+    return render_template("results.html", marks=marks, recs=recs, prefs=preference_list)
+
+
+@app.route("/compare")
+def compare():
+    # compare? expects ?ids=1,2,3
+    ids = request.args.get("ids", "")
+    if not ids:
+        return "No college ids provided", 400
+    id_list = [int(x) for x in ids.split(",") if x.strip().isdigit()]
+    colleges = College.query.filter(College.id.in_(id_list)).all()
+    return render_template("compare.html", colleges=colleges)
+
+
+@app.route("/api/colleges")
+def api_colleges():
+    # return all colleges as JSON (useful for JS frontend)
+    allc = College.query.all()
+    return jsonify([c.to_dict() for c in allc])
+
+
+if __name__ == "__main__":
+    # ensure DB exists
+    if not os.path.exists(os.path.join(BASE_DIR, "colleges.db")):
+        print("Database not found. Create it with import_db.py first.")
+    app.run(debug=True)
