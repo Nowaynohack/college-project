@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartCAP - College Recommendation</title>
+  <style>
+    /* ===== Reset & Base ===== */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+
+    /* ===== Navbar ===== */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 5%;
+      background: #fff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      color: #007acc;
+    }
+    .logo img { width: 30px; margin-right: 8px; }
+    nav ul {
+      display: flex;
+      gap: 1.5rem;
+    }
+    nav a:hover { color: #007acc; }
+
+    /* ===== Hero Section ===== */
+    .hero {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 4rem 5%;
+      background: linear-gradient(to right, #004aad, #007acc);
+      color: #fff;
+    }
+    .hero-text {
+      max-width: 50%;
+    }
+    .hero-text h1 {
+      font-size: 3rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+    .hero-text h1 span { color: #ffc107; }
+    .hero-text p { margin-bottom: 1.5rem; }
+    .btn {
+      padding: 0.8rem 1.5rem;
+      background: #ff5722;
+      color: #fff;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .btn:hover { background: #e64a19; }
+
+    .hero-card {
+      background: rgba(255,255,255,0.1);
+      padding: 2rem;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    /* ===== Stats Section ===== */
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      padding: 3rem 5%;
+      text-align: center;
+    }
+    .stat h2 { font-size: 2rem; color: #007acc; }
+
+    /* ===== Features ===== */
+    .features {
+      padding: 4rem 5%;
+      text-align: center;
+      background: #f9f9f9;
+    }
+    .features h2 { margin-bottom: 2rem; }
+    .feature-grid {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+    .feature {
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 10px;
+      width: 220px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .feature h3 { margin: 1rem 0; }
+
+    /* ===== CTA Banner ===== */
+    .cta {
+      padding: 3rem 5%;
+      text-align: center;
+      background: linear-gradient(to right, #007acc, #00c6ff);
+      color: #fff;
+    }
+    .cta .btn {
+      background: #fff;
+      color: #007acc;
+    }
+    .cta .btn:hover { background: #f1f1f1; }
+
+    /* ===== Footer ===== */
+    footer {
+      background: #111;
+      color: #ddd;
+      padding: 2rem 5%;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    .footer-section { width: 200px; margin-bottom: 1rem; }
+    .footer-section h4 { margin-bottom: 1rem; }
+    .footer-section a { display: block; margin-bottom: 0.5rem; color: #ccc; }
+    .footer-section a:hover { color: #fff; }
+
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header>
+    <div class="logo"><img src="https://img.icons8.com/ios-filled/50/007acc/book.png"/> SmartCAP</div>
+    <nav>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Find Colleges</a></li>
+        <li><a href="#">My List</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-text">
+      <h1>Find Your Dream <span>College</span></h1>
+      <p>Smart recommendations for your Centralized Admission Process journey. Get personalized college suggestions based on your marks, preferences, and budget.</p>
+      <button class="btn">Start Now →</button>
+    </div>
+    <div class="hero-card">
+      <h2>Smart Recommendations</h2>
+      <p>Get categorized college suggestions: Safe, Moderate & Dream colleges.</p>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="stats">
+    <div class="stat">
+      <h2>500+</h2>
+      <p>Colleges Listed</p>
+    </div>
+    <div class="stat">
+      <h2>50,000+</h2>
+      <p>Students Helped</p>
+    </div>
+    <div class="stat">
+      <h2>95%</h2>
+      <p>Success Rate</p>
+    </div>
+    <div class="stat">
+      <h2>100+</h2>
+      <p>Cities Covered</p>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="features">
+    <h2>Why Choose SmartCAP?</h2>
+    <div class="feature-grid">
+      <div class="feature">
+        <h3>Smart Matching</h3>
+        <p>AI-powered algorithm matches you with colleges based on your profile and preferences.</p>
+      </div>
+      <div class="feature">
+        <h3>Student Reviews</h3>
+        <p>Real reviews from current students to help you make informed decisions.</p>
+      </div>
+      <div class="feature">
+        <h3>Placement Records</h3>
+        <p>Detailed placement stats and salary packages for better career planning.</p>
+      </div>
+      <div class="feature">
+        <h3>Success Rate</h3>
+        <p>Track your admission probability with our predictive analysis.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <h2>Ready to Find Your Perfect College?</h2>
+    <p>Join thousands of students who found their dream colleges through SmartCAP.</p>
+    <button class="btn">Get Started Free →</button>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-section">
+      <h3>SmartCAP</h3>
+      <p>Empowering students with intelligent college recommendations during the Centralized Admission Process.</p>
+    </div>
+    <div class="footer-section">
+      <h4>Quick Links</h4>
+      <a href="#">Home</a>
+      <a href="#">Find Colleges</a>
+      <a href="#">About Us</a>
+      <a href="#">Contact</a>
+    </div>
+    <div class="footer-section">
+      <h4>Support</h4>
+      <a href="#">Help Center</a>
+      <a href="#">FAQ</a>
+      <a href="#">Student Guide</a>
+      <a href="#">Privacy Policy</a>
+    </div>
+  </footer>
+
+</body>
+</html>   seperate html css js 
